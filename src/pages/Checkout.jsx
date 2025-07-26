@@ -1,5 +1,5 @@
 import { Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
@@ -80,8 +80,22 @@ function Checkout() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
+    watch,
+    setValue,
+    reset,
   } = useForm();
+
+  const isShipping = watch("isShipping");
+
+  useEffect(() => {
+    if (isShipping) {
+      setValue("shippingEmail1", getValues("billingEmail1"));
+      setValue("shippingEmail2", getValues("billingEmail2"));
+      setValue("shippingCity", getValues("billingCity"));
+    }
+  }, [isShipping, setValue, getValues]);
 
   function onSubmit(data) {
     setIsLoading(true);
@@ -91,6 +105,11 @@ function Checkout() {
       setIsLoading(false);
       navigate("/orderconfirmation");
     }, 500);
+  }
+
+  function onReset() {
+    reset();
+    setIsLoading(false);
   }
 
   function onError(error) {
@@ -130,6 +149,8 @@ function Checkout() {
               required: "This field is required",
             })}
             invalid={errors?.name?.message}
+            aria-invalid={errors?.name ? "true" : "false"}
+            aria-describedby={errors?.name ? "name-error" : undefined}
           />
           {errors?.name?.message && (
             <FormError>{errors.name.message}</FormError>
@@ -144,8 +165,15 @@ function Checkout() {
             placeholder="Enter Email"
             {...register("email", {
               required: "This field is required",
+              // For validation
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email address",
+              },
             })}
             invalid={errors?.email?.message}
+            aria-invalid={errors?.email ? "true" : "false"}
+            aria-describedby={errors?.email ? "email-error" : undefined}
           />
           {errors?.email?.message && (
             <FormError>{errors.email.message}</FormError>
@@ -206,6 +234,10 @@ function Checkout() {
                 required: "The field is required",
               })}
               invalid={errors?.shippingEmail1?.message}
+              aria-invalid={errors?.shippingEmail1 ? "true" : "false"}
+              aria-describedby={
+                errors?.shippingEmail1 ? "shippingEmail1-error" : undefined
+              }
             />
             <FormInput
               type="text"
@@ -222,9 +254,10 @@ function Checkout() {
 
         <FormRow area="actions">
           <Button
-            type="reset"
+            type="button"
             variant="outlined"
             sx={{ textTransform: "capitalize" }}
+            onClick={onReset}
           >
             Cancel
           </Button>
