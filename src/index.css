@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Cario", sans-serif;
+}
+
+/* Style the header */
+/* #search {
+  display: flex;
+}
+
+#search input {
+  margin-left: 10px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+#headerHomeIcon {
+  justify-self: start;
+}
+
+#headerTitle {
+  justify-self: center;
+}
+
+#headerCartIcon {
+  justify-self: end;
+} */
+
+/* Container for flexboxes */
+/* section {
+  display: -webkit-flex;
+  display: flex;
+} */
+
+/* Style the footer */
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+footer a {
+  color: white;
+}
+
+nav li:not(:last-of-type) a {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    bottom: 0;
+    background-color: rgb(255 255 224 / 50%);
+    height: 1px;
+    width: calc(100% - 0.8rem);
+    transition: all;
+    -webkit-transition: all;
+    -moz-transition: all;
+    -ms-transition: all;
+    -o-transition: all;
+  }
+
+  &:hover::before {
+    display: none;
+  }
+}
