@@ -1,11 +1,9 @@
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { getCategories } from "./services/data-services";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
-import Products from "./components/Products";
 import ProductDetails from "./pages/ProductDetails";
-import Loading from "./components/Loading";
 import Basket from "./pages/Basket";
 import Checkout from "./pages/Checkout";
 import PageNotFound from "./pages/PageNotFoud";
@@ -13,6 +11,7 @@ import Category from "./components/Category";
 import Home from "./pages/Home";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import SearchResults from "./components/SearchResults";
+
 
 function App() {
   const [categories, setCategories] = useState({ errorMessage: "", data: [] });

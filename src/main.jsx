@@ -5,7 +5,7 @@ import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 
 import App from "./App.jsx";
-import "./index.css";
+import "./styles/index.css";
 import CartProvider from "./contexts/CartContext.jsx";
 
 const theme = createTheme({

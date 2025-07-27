@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { toast } from "react-toastify";
 
 const Form = styled.form`
   display: grid;
@@ -71,6 +72,7 @@ const FormError = styled.p`
   padding: 6px;
   background-color: #fafafa;
   border-radius: 6px;
+  margin: 4px 0;
 `;
 
 function Checkout() {
@@ -85,7 +87,11 @@ function Checkout() {
     watch,
     setValue,
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: localStorage.getItem("checkoutData")
+      ? JSON.parse(localStorage.getItem("checkoutData"))
+      : null,
+  });
 
   const isShipping = watch("isShipping");
 
@@ -101,10 +107,13 @@ function Checkout() {
     setIsLoading(true);
     console.log(data);
 
+    localStorage.setItem("checkoutData", JSON.stringify(data));
+
+    toast.success("Success Checkout all your orders");
     setTimeout(() => {
       setIsLoading(false);
       navigate("/orderconfirmation");
-    }, 500);
+    }, 3100);
   }
 
   function onReset() {
@@ -208,18 +217,38 @@ function Checkout() {
               type="text"
               id="billingEmail"
               placeholder="Enter first line"
-              {...register("billingEmail1")}
+              {...register("billingAddress1", {
+                required: "Billing address is required",
+              })}
+              invalid={errors?.billingAddress1?.message}
+              aria-invalid={errors?.billingAddress1 ? "true" : "false"}
+              aria-describedby={
+                errors?.billingAddress1 ? "billingAddress1-error" : undefined
+              }
             />
+            {errors?.billingAddress1?.message && (
+              <FormError>{errors.billingAddress1.message}</FormError>
+            )}
             <FormInput
               type="text"
               placeholder="Second Billing Address (Opt)"
-              {...register("billingEmail2")}
+              {...register("billingAddress2")}
             />
             <FormInput
               type="text"
               placeholder="Billing City"
-              {...register("billingCity")}
+              {...register("billingCity", {
+                required: "Billing city is required",
+              })}
+              invalid={errors?.billingCity?.message}
+              aria-invalid={errors?.billingCity ? "true" : "false"}
+              aria-describedby={
+                errors?.billingCity ? "billingCity-error" : undefined
+              }
             />
+            {errors?.billingCity?.message && (
+              <FormError>{errors.billingCity.message}</FormError>
+            )}
           </div>
         </FormRow>
 
@@ -230,15 +259,18 @@ function Checkout() {
               type="text"
               id="shippingEmail"
               placeholder="Enter first line"
-              {...register("shippingEmail1", {
-                required: "The field is required",
+              {...register("shippingAddress1", {
+                required: "Shipping address is required",
               })}
-              invalid={errors?.shippingEmail1?.message}
-              aria-invalid={errors?.shippingEmail1 ? "true" : "false"}
+              invalid={errors?.shippingAddress1?.message}
+              aria-invalid={errors?.shippingAddress1 ? "true" : "false"}
               aria-describedby={
-                errors?.shippingEmail1 ? "shippingEmail1-error" : undefined
+                errors?.shippingAddress1 ? "shippingEmail1-error" : undefined
               }
             />
+            {errors?.shippingEmail1?.message && (
+              <FormError>{errors.shippingEmail1.message}</FormError>
+            )}
             <FormInput
               type="text"
               placeholder="Second Shipping Address (Opt)"
@@ -247,8 +279,18 @@ function Checkout() {
             <FormInput
               type="text"
               placeholder="Shipping City"
-              {...register("shippingCity")}
+              {...register("shippingCity", {
+                required: "Shipping city is required",
+              })}
+              invalid={errors?.shippingCity?.message}
+              aria-invalid={errors?.shippingCity ? "true" : "false"}
+              aria-describedby={
+                errors?.shippingCity ? "shippingCity-error" : undefined
+              }
             />
+            {errors?.shippingCity?.message && (
+              <FormError>{errors.shippingCity.message}</FormError>
+            )}
           </div>
         </FormRow>
 
