@@ -1,11 +1,14 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useCart } from "../contexts/useCart";
-import { toast } from "react-toastify";
 import { Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { toast } from "react-toastify";
 
-import { createCheckout } from "../utils";
+// For Stripe payment
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY); // your publishable key get it from dashboard account
 
 const Form = styled.form`
   display: grid;
@@ -46,7 +49,6 @@ const FormRow = styled.div`
       margin-top: 2rem;
     `}
 `;
-
 const FormInput = styled.input`
   border: 1px solid #888;
   border-color: ${(props) => props.invalid && "red"};
@@ -63,7 +65,6 @@ const FormInput = styled.input`
     border-color: ${(props) => (props.invalid ? "red " : "#f79546")};
   }
 `;
-
 const FormLabel = styled.label`
   width: 140px;
   font-size: 0.9rem;
@@ -80,19 +81,32 @@ const FormError = styled.p`
 `;
 
 function Checkout() {
-  const { items } = useCart();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
+    watch,
+    setValue,
     reset,
   } = useForm({
     defaultValues: localStorage.getItem("checkoutData")
       ? JSON.parse(localStorage.getItem("checkoutData"))
       : null,
   });
+
+  const isShipping = watch("isShipping");
+
+  useEffect(() => {
+    if (isShipping) {
+      setValue("shippingEmail1", getValues("billingEmail1"));
+      setValue("shippingEmail2", getValues("billingEmail2"));
+      setValue("shippingCity", getValues("billingCity"));
+    }
+  }, [isShipping, setValue, getValues]);
 
   async function onSubmit(data) {
     setIsLoading(true);
@@ -101,9 +115,12 @@ function Checkout() {
     localStorage.setItem("checkoutData", JSON.stringify(data));
     toast.success("Success Checkout all your orders");
 
-    setTimeout(function () {
-      createCheckout(items);
-    }, 3000);
+    setTimeout(() => {
+      setIsLoading(false);
+      // navigate("/orderconfirmation");
+      window.location.href =
+        "https://buy.stripe.com/test_fZu8wQgwbcli3Bm4rI0co00";
+    }, 3100);
   }
 
   function onReset() {

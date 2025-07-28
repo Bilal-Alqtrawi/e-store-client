@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+/* import { useEffect, useState } from "react";
 
 function OrderConfirmation() {
   const [checkoutData, setCheckoutData] = useState(() => {
@@ -16,3 +16,13 @@ function OrderConfirmation() {
 }
 
 export default OrderConfirmation;
+ */
+
+export default function OrderConfirmation() {
+  return (
+    <div>
+      <h2>✅ Payment Successful!</h2>
+      <p>Thank you for your purchase.</p>
+    </div>
+  );
+}

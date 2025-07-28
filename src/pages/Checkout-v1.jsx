@@ -1,11 +1,15 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useCart } from "../contexts/useCart";
-import { toast } from "react-toastify";
 import { Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-import { createCheckout } from "../utils";
+// For Stripe payment
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY); // your publishable key get it from dashboard account
 
 const Form = styled.form`
   display: grid;
@@ -46,7 +50,6 @@ const FormRow = styled.div`
       margin-top: 2rem;
     `}
 `;
-
 const FormInput = styled.input`
   border: 1px solid #888;
   border-color: ${(props) => props.invalid && "red"};
@@ -63,7 +66,6 @@ const FormInput = styled.input`
     border-color: ${(props) => (props.invalid ? "red " : "#f79546")};
   }
 `;
-
 const FormLabel = styled.label`
   width: 140px;
   font-size: 0.9rem;
@@ -80,13 +82,16 @@ const FormError = styled.p`
 `;
 
 function Checkout() {
-  const { items } = useCart();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
+    watch,
+    setValue,
     reset,
   } = useForm({
     defaultValues: localStorage.getItem("checkoutData")
@@ -94,16 +99,67 @@ function Checkout() {
       : null,
   });
 
+  const isShipping = watch("isShipping");
+
+  useEffect(() => {
+    if (isShipping) {
+      setValue("shippingEmail1", getValues("billingEmail1"));
+      setValue("shippingEmail2", getValues("billingEmail2"));
+      setValue("shippingCity", getValues("billingCity"));
+    }
+  }, [isShipping, setValue, getValues]);
+
   async function onSubmit(data) {
     setIsLoading(true);
     console.log(data);
 
     localStorage.setItem("checkoutData", JSON.stringify(data));
-    toast.success("Success Checkout all your orders");
 
-    setTimeout(function () {
-      createCheckout(items);
-    }, 3000);
+    // toast.success("Success Checkout all your orders");
+
+    const res = await axios.post(
+      "http://localhost:3000/api/stripe/create-checkout-session",
+      {
+        items: [
+          { name: "Product A", price: 5000, quantity: 1 },
+          { name: "Product B", price: 2500, quantity: 2 },
+        ],
+      },
+    );
+
+    const stripe = await stripePromise;
+    window.location.href = res.data.url;
+
+    // try {
+    //   const res = await axios(
+    //     "http://localhost:3000/api/stripe/create-checkout-session",
+    //     {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({
+    //         items: [
+    //           { name: "Product A", price: 5000, quantity: 1 },
+    //           { name: "Product B", price: 2500, quantity: 2 },
+    //         ],
+    //       }),
+    //     },
+    //   );
+
+    //   const data = await res.json();
+    //   const stripe = await stripePromise;
+    //   stripe.redirectToCheckout({ url: data.url });
+    //   stripe.redirectToCheckout({ url: data.url });
+    // } catch (error) {
+    //   console.error("Stripe Checkout Error:", error.message);
+    //   toast.error("Failed to create checkout session.");
+    // } finally {
+    //   setIsLoading(false);
+    // }
+
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   navigate("/orderconfirmation");
+    // }, 3100);
   }
 
   function onReset() {

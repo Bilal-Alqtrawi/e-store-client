@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -29,6 +30,26 @@ export async function fetcher(URL) {
   }
 
   return resObj;
+}
+
+export async function createCheckout(items) {
+  console.log(items);
+
+  try {
+    const res = await axios.post(`${BASE_URL}/stripe/create-checkout-session`, {
+      items: items.map((item) => ({
+        name: item.title,
+        price: item.price,
+        quantity: item.quantity,
+        image: `http://localhost:3000/uploads/${item.image}`,
+      })),
+    });
+    window.open(res.data.url, "_blank");
+    // window.location.href = res.data.url;
+  } catch (error) {
+    console.log("Checkout Error:", error);
+    toast.error("Checkout faild");
+  }
 }
 
 /* 
