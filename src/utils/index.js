@@ -41,7 +41,7 @@ export async function createCheckout(items) {
         name: item.title,
         price: item.price,
         quantity: item.quantity,
-        image: `http://localhost:3000/uploads/${item.image}`,
+        image: `https://e-store-server-u54t.onrender.com/uploads/${item.image}`,
       })),
     });
     window.open(res.data.url, "_blank");
