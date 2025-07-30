@@ -14,7 +14,7 @@ export default function SearchResults() {
       if (!query) return;
 
       async function fetchData() {
-        setProducts({ errorMessage: "", data: [] });
+        // setProducts({ errorMessage: "", data: [] });
         const resObj = await getProductsByQuery(query);
 
         setProducts(resObj);

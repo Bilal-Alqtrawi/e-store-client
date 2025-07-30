@@ -2,6 +2,8 @@ import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../contexts/useCart";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 export default function Product({
   id,
@@ -27,17 +29,23 @@ export default function Product({
         </Link>
       </h2>
       <div className="flex items-center gap-5">
-        <figure className="max-w-[22rem]">
-          <img src={`/assets/${image}`} alt={title} className="p-2 shadow" />
+        <figure className="h-[250px] w-[250px] overflow-hidden rounded-xl bg-gray-50 text-center">
+          <LazyLoadImage
+            src={`/assets/${image}`}
+            alt={title}
+            effect="blur"
+            className="h-full w-full object-cover p-2"
+            loading="lazy"
+          ></LazyLoadImage>
         </figure>
 
         <div className="flex-1 space-y-5 pr-5">
           <div className="categort-product-info-dimensions">
             <h2 className="mb-2 font-bold">Dimensions</h2>
-            <p className="text-gray-600">{specs.dimensions}</p>
+            <p className="text-gray-600">{specs?.dimensions}</p>
           </div>
 
-          {specs.capacity && (
+          {specs?.capacity && (
             <div>
               <h2 className="mb-2 font-bold">Capacity</h2>
               <label className="text-gray-600">{specs.capacity}</label>

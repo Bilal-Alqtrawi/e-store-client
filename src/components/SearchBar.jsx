@@ -23,8 +23,10 @@ function SearchBar() {
   useEffect(
     function () {
       const timeout = setTimeout(() => {
-        if (query) {
+        if (query.length >= 3) {
           navigate(`/search?s=${query}`);
+        } else {
+          navigate(`/`);
         }
       }, 500); // Runs after 0.5s
       return function cleanup() {

@@ -3,6 +3,11 @@ import { fetcher } from "../utils";
 export function getCategories() {
   return fetcher("categories");
 }
+
+export function getAllProducts() {
+  return fetcher(`products`);
+}
+
 export function getProducts(id) {
   return fetcher(`products?catId=${id}`);
 }

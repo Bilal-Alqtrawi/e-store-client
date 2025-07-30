@@ -9,7 +9,7 @@ export async function fetcher(URL) {
     data: [],
   };
   try {
-    const res = await axios.get(`${BASE_URL}/${URL}`);
+    const res = await axios.get(`${BASE_URL}/api/${URL}`);
 
     // if (res.statusText !== "OK") throw new Error(`HTTP Error ${res.status}`);
     resObj.errorMessage = "";
@@ -36,14 +36,17 @@ export async function createCheckout(items) {
   console.log(items);
 
   try {
-    const res = await axios.post(`${BASE_URL}/stripe/create-checkout-session`, {
-      items: items.map((item) => ({
-        name: item.title,
-        price: item.price,
-        quantity: item.quantity,
-        image: `https://e-store-server-u54t.onrender.com/uploads/${item.image}`,
-      })),
-    });
+    const res = await axios.post(
+      `${BASE_URL}/api/stripe/create-checkout-session`,
+      {
+        items: items.map((item) => ({
+          name: item.title,
+          price: item.price,
+          quantity: item.quantity,
+          image: `https://e-store-server-u54t.onrender.com/uploads/${item.image}`,
+        })),
+      },
+    );
     window.open(res.data.url, "_blank");
     // window.location.href = res.data.url;
   } catch (error) {

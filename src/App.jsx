@@ -11,7 +11,7 @@ import Category from "./components/Category";
 import Home from "./pages/Home";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import SearchResults from "./components/SearchResults";
-
+import Products from "./components/Products";
 
 function App() {
   const [categories, setCategories] = useState({ errorMessage: "", data: [] });
@@ -34,6 +34,7 @@ function App() {
 
             <Route path="basket" element={<Basket />} />
             <Route path="checkout" element={<Checkout />} />
+            <Route path="products" element={<Products />} />
             <Route path="products/:productId" element={<ProductDetails />} />
             <Route path="categories/:categoryId" element={<Category />} />
             <Route path="orderconfirmation" element={<OrderConfirmation />} />
