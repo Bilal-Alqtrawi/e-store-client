@@ -1,28 +1,28 @@
-/* import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function OrderConfirmation() {
-  const [checkoutData, setCheckoutData] = useState(() => {
-    const stored = localStorage.getItem("checkoutData");
-    return stored ? JSON.parse(stored) : [];
-  });
-
-  console.log(checkoutData);
+  useEffect(function () {
+    localStorage.removeItem("checkoutData");
+    localStorage.removeItem("cartItems");
+  }, []);
   return (
-    <div>
-      <h2>Order Confirmation</h2>
-      <p>Thanks for placing an order</p>
+    <div className="p-8 text-center">
+      <h1>🎉 Thank You for Your Purchase!</h1>
+      <p>Your order has been successfully received and is being processed.</p>
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/3159/3159066.png"
+        alt="Success"
+        width={150}
+        className="my-8"
+      />
+      <Link to="/products">
+        <button className="px-[20px] py-[10px] text-base">
+          Continue Shopping
+        </button>
+      </Link>
     </div>
   );
 }
 
 export default OrderConfirmation;
- */
-
-export default function OrderConfirmation() {
-  return (
-    <div>
-      <h2>✅ Payment Successful!</h2>
-      <p>Thank you for your purchase.</p>
-    </div>
-  );
-}
