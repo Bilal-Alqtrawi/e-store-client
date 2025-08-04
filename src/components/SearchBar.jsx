@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -14,6 +14,9 @@ const SearchIcon = styled.span`
 function SearchBar() {
   const [query, setQuery] = useState("");
 
+  const timeoutId = useRef(null);
+  const inputEL = useRef(null);
+
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -22,19 +25,23 @@ function SearchBar() {
 
   useEffect(
     function () {
-      const timeout = setTimeout(() => {
+      if (document.activeElement === inputEL.current) {
+        if (query.length < 3) {
+          navigate("/products");
+        }
+      }
+
+      timeoutId.current = setTimeout(() => {
         if (query.length >= 3) {
           navigate(`/search?s=${query}`);
-        } else {
-          navigate(`/`);
         }
       }, 500); // Runs after 0.5s
       return function cleanup() {
-        clearTimeout(timeout);
+        clearTimeout(timeoutId.current);
       };
     },
 
-    [query],
+    [query, navigate],
   );
 
   return (
@@ -47,6 +54,7 @@ function SearchBar() {
         value={query}
         onChange={handleChange}
         className="ml-2 mt-1 h-8 rounded-md px-2 py-1 text-black focus:outline-vibrant-primary"
+        ref={inputEL}
       />
       <SearchIcon>
         <MagnifyingGlassIcon width={20} height={20} />

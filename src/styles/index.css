@@ -21,34 +21,9 @@ body {
   font-family: "Cario", sans-serif;
 }
 
-/* Style the header */
-/* #search {
-  display: flex;
+li:has(a.active) {
+  background-color: #ff6b00;
 }
-
-#search input {
-  margin-left: 10px;
-  height: 30px;
-  margin-top: 5px;
-}
-
-#headerHomeIcon {
-  justify-self: start;
-}
-
-#headerTitle {
-  justify-self: center;
-}
-
-#headerCartIcon {
-  justify-self: end;
-} */
-
-/* Container for flexboxes */
-/* section {
-  display: -webkit-flex;
-  display: flex;
-} */
 
 /* Style the footer */
 footer {

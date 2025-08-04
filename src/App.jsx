@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import SearchResults from "./components/SearchResults";
 import Products from "./components/Products";
+import MyOrders from "./pages/MyOrders";
 
 function App() {
   const [categories, setCategories] = useState({ errorMessage: "", data: [] });
@@ -39,6 +40,7 @@ function App() {
             <Route path="categories/:categoryId" element={<Category />} />
             <Route path="orderconfirmation" element={<OrderConfirmation />} />
             <Route path="search" element={<SearchResults />} />
+            <Route path="myorders" element={<MyOrders />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
