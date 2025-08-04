@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 
 localStorage.setItem(
   "orders",
@@ -32,17 +33,17 @@ localStorage.setItem(
 function MyOrders() {
   const [orders, setOrders] = useState([]);
 
-  useEffect(function () {
+  useEffect(() => {
     const storedOrders = JSON.parse(localStorage.getItem("orders")) || [];
     setOrders(storedOrders);
   }, []);
 
   return (
-    <div className="p-4">
-      <h2 className="mb-4 text-2xl font-semibold">My Orders</h2>
+    <div className="p-6">
+      <h2 className="mb-6 text-3xl font-bold text-gray-800">🛒 My Orders</h2>
 
       {orders.length === 0 ? (
-        <p>No orders yet.</p>
+        <p className="text-gray-500">No orders yet.</p>
       ) : (
         <OrderList orders={orders} />
       )}
@@ -52,7 +53,7 @@ function MyOrders() {
 
 function OrderList({ orders }) {
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
       {orders.map((order, index) => (
         <OrderItem key={index} order={order} index={index} />
       ))}
@@ -62,31 +63,36 @@ function OrderList({ orders }) {
 
 function OrderItem({ order, index }) {
   return (
-    <Card className="p-5">
+    <Card className="rounded-xl p-5 shadow-md">
       <Typography
+        variant="h6"
+        component="h3"
         fontWeight="bold"
-        textAlign="center"
-        fontSize={22}
-        letterSpacing={0.8}
+        className="text-center text-blue-700"
+        gutterBottom
       >
         Order #{index + 1}
       </Typography>
-      <Typography>Date: {order.date}</Typography>
-      <Typography>Total Items: {order.items.length}</Typography>
-      <Typography>Total Price: ${order.total.toFixed(2)}</Typography>
-      <Typography>
-        Status: <span className="text-green-600">Processing</span>
-      </Typography>
+
+      <Divider sx={{ marginBottom: "10px" }} />
+
+      <div className="space-y-2 text-gray-700">
+        <p>
+          <strong>Date:</strong> {order.date}
+        </p>
+        <p>
+          <strong>Total Items:</strong> {order.items.length}
+        </p>
+        <p>
+          <strong>Total Price:</strong>{" "}
+          <span className="text-green-600">${order.total.toFixed(2)}</span>
+        </p>
+        <p>
+          <strong>Status:</strong>{" "}
+          <span className="font-medium text-yellow-600">Processing</span>
+        </p>
+      </div>
     </Card>
-    // <div className="rounded-lg border bg-white p-4 shadow-sm">
-    //   <p className="font-bold">Order #{index + 1}</p>
-    //   <p>Date: {order.date}</p>
-    //   <p>Total Items: {order.items.length}</p>
-    //   <p>Total Price: ${order.total.toFixed(2)}</p>
-    //   <p>
-    //     Status: <span className="text-green-600">Processing</span>
-    //   </p>
-    // </div>
   );
 }
 

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 
 import { getCategories } from "./services/data-services";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Layout from "./components/Layout";
 import ProductDetails from "./pages/ProductDetails";
 import Basket from "./pages/Basket";
@@ -31,7 +36,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Layout categories={categories} />}>
-            <Route index element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route index element={<Navigate to="/home" replace />} />
 
             <Route path="basket" element={<Basket />} />
             <Route path="checkout" element={<Checkout />} />

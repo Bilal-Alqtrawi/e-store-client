@@ -27,7 +27,6 @@ function Category() {
 
   return (
     <>
-      <h1 className="mb-6 text-2xl font-bold">Products</h1>
       {products?.errorMessage && <p>Error: {products.errorMessage}</p>}
       {products?.data && <Products products={products.data} />}
     </>

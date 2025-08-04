@@ -14,15 +14,17 @@ export default function Header() {
         <SearchBar />
       </div>
 
-      <Typography
-        component="h2"
-        fontFamily="cursive"
-        fontSize="20px"
-        fontWeight="bold"
-        className="flex-grow text-center"
-      >
-        Bilal - Store
-      </Typography>
+      <Link to="home">
+        <Typography
+          component="h2"
+          fontFamily="cursive"
+          fontSize="20px"
+          fontWeight="bold"
+          className="flex-grow text-center"
+        >
+          Bilal - Store
+        </Typography>
+      </Link>
 
       <Link to="/basket" className="w-8 transition hover:text-gray-800">
         <ShoppingCartIcon width={25} height={25} />
