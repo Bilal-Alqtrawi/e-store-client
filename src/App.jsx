@@ -21,11 +21,22 @@ import MyOrders from "./pages/MyOrders";
 
 function App() {
   const [categories, setCategories] = useState({ errorMessage: "", data: [] });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(function () {
     async function fetchData() {
-      const resObj = await getCategories();
-      setCategories(resObj);
+      try {
+        setIsLoading(true);
+
+        const resObj = await getCategories();
+        setCategories(resObj);
+      } catch (err) {
+        console.error(err.message);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     fetchData();
@@ -35,7 +46,16 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Layout categories={categories} />}>
+          <Route
+            path="/"
+            element={
+              <Layout
+                categories={categories}
+                loading={isLoading}
+                error={error}
+              />
+            }
+          >
             <Route path="home" element={<Home />} />
             <Route index element={<Navigate to="/home" replace />} />
 

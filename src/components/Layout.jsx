@@ -4,8 +4,9 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Main from "./Main";
 import Sidebar from "./Sidebar";
+import Loading from "./Loading";
 
-function Layout({ categories }) {
+function Layout({ categories, loading, error }) {
   return (
     <div className="flex h-screen flex-col">
       <ToastContainer
@@ -17,9 +18,13 @@ function Layout({ categories }) {
       />
       <Header />
       <Main>
-        <Sidebar>
-          <Categories categories={categories} />
-        </Sidebar>
+        {loading === false && error === "" && (
+          <Sidebar>
+            <Categories categories={categories} />
+          </Sidebar>
+        )}
+        {error && <p className="font-bold text-red-500">{error}</p>}
+        {loading && <Loading />}
       </Main>
       <Footer />
     </div>

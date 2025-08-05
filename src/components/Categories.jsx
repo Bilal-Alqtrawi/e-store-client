@@ -1,4 +1,5 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Loading from "./Loading";
 
 function Categories({ categories }) {
   return (
