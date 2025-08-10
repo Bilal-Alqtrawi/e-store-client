@@ -4,6 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .animate-fade-scale {
+    @apply scale-90 opacity-0;
+    animation: fadeScale 0.3s ease forwards;
+    -webkit-animation: fadeScale 0.3s ease forwards;
+  }
+
+  @keyframes fadeScale {
+    to {
+      opacity: 1;
+      transform: scale(1);
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -ms-transform: scale(1);
+      -o-transform: scale(1);
+    }
+  }
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -21,10 +40,6 @@ body {
   font-family: "Cario", sans-serif;
 }
 
-li:has(a.active) {
-  background-color: #ff6b00;
-}
-
 /* Style the footer */
 footer {
   background-color: #777;
@@ -35,27 +50,4 @@ footer {
 
 footer a {
   color: white;
-}
-
-nav li:not(:last-of-type) a {
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 8px;
-    bottom: 0;
-    background-color: rgb(255 255 224 / 50%);
-    height: 1px;
-    width: calc(100% - 0.8rem);
-    transition: all;
-    -webkit-transition: all;
-    -moz-transition: all;
-    -ms-transition: all;
-    -o-transition: all;
-  }
-
-  &:hover::before {
-    display: none;
-  }
 }

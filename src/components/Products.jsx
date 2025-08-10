@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getAllProducts } from "../services/data-services";
 import { useSearchParams } from "react-router-dom";
 import SortBy from "./SortBy";
+import Loading from "./Loading";
 
 export default function Products({ products }) {
   const [allProducts, setAllProducts] = useState(products);
@@ -35,7 +36,8 @@ export default function Products({ products }) {
     setSearchParams(searchParams);
   }
 
-  if (!allProducts) return <p>There is no products available</p>;
+  // if (!allProducts) return <p>There is no products available</p>;
+  if (!allProducts) return <Loading />;
 
   let sortedProducts;
 
@@ -60,7 +62,7 @@ export default function Products({ products }) {
   return (
     <>
       <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <h1 className="text-3xl font-bold tracking-wide text-gray-800">
+        <h1 className="text-3xl font-bold tracking-wide text-gray-800 dark:text-white">
           Products
         </h1>
         <SortBy sortBy={sortBy} handleSortBy={handleSortBy} />
@@ -68,7 +70,11 @@ export default function Products({ products }) {
       <div className="products grid grid-cols-1 gap-5">
         {sortedProducts?.map((product) => (
           <article key={product.id}>
-            <Card variant="outlined">
+            <Card
+              variant="outlined"
+              sx={{ borderRadius: 3, borderColor: "#e3e3e3" }}
+              className="dark:border-gray-300 shadow-lg"
+            >
               <Product key={product.id} {...product} />
             </Card>
           </article>

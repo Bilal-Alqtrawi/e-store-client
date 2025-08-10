@@ -2,13 +2,19 @@ import { Link, NavLink } from "react-router-dom";
 
 function Sidebar({ children }) {
   return (
-    <aside className="w-[200px] bg-slate-600 text-white">
+    <aside className="w-[200px] bg-slate-600 text-white dark:bg-zinc-900 dark:text-white">
       <nav className="flex h-full flex-col gap-4 p-2">
         <ul className="flex flex-col">
           <li>
             <NavLink
               to="/products"
-              className="block rounded-md p-2 shadow-vibrant-secondary transition hover:bg-vibrant-primary"
+              className={({ isActive }) =>
+                `mb-2 block rounded-md p-2 transition ${
+                  isActive
+                    ? "bg-vibrant-primary text-white dark:bg-indigo-700"
+                    : "hover:bg-vibrant-primary dark:hover:bg-zinc-700"
+                }`
+              }
             >
               All Products
             </NavLink>
@@ -17,7 +23,13 @@ function Sidebar({ children }) {
           <li>
             <NavLink
               to="/basket"
-              className="block rounded-md p-2 shadow-vibrant-secondary transition hover:bg-vibrant-primary"
+              className={({ isActive }) =>
+                `mb-2 block rounded-md p-2 transition ${
+                  isActive
+                    ? "bg-vibrant-primary text-white dark:bg-indigo-700"
+                    : "hover:bg-vibrant-primary dark:hover:bg-zinc-700"
+                }`
+              }
             >
               Basket
             </NavLink>
@@ -25,7 +37,13 @@ function Sidebar({ children }) {
           <li>
             <NavLink
               to="/myorders"
-              className="block rounded-md p-2 shadow-vibrant-secondary transition hover:bg-vibrant-primary"
+              className={({ isActive }) =>
+                `block rounded-md p-2 transition ${
+                  isActive
+                    ? "bg-vibrant-primary text-white dark:bg-indigo-700"
+                    : "hover:bg-vibrant-primary dark:hover:bg-zinc-700"
+                }`
+              }
             >
               My orders
             </NavLink>

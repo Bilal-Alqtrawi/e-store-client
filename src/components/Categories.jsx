@@ -11,7 +11,13 @@ function Categories({ categories }) {
             <li key={category.id} className="mb-2">
               <NavLink
                 to={`categories/${category.id}`}
-                className="block rounded-md p-2 shadow-vibrant-secondary transition hover:bg-vibrant-primary"
+                className={({ isActive }) =>
+                  `mb-2 block rounded-md p-2 transition ${
+                    isActive
+                      ? "bg-vibrant-primary text-white dark:bg-indigo-700"
+                      : "hover:bg-vibrant-primary dark:hover:bg-zinc-700"
+                  }`
+                }
               >
                 {category.title}
               </NavLink>

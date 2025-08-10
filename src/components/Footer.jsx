@@ -10,7 +10,7 @@ const NavLink = styled(Link)`
 
 function Footer() {
   return (
-    <footer>
+    <footer className="backdrop-blur-md dark:bg-[#121212]/90 dark:shadow-lg">
       <NavLink to="/">Home</NavLink> | <NavLink to="/basket">Basket</NavLink>
     </footer>
   );

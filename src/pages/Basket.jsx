@@ -31,6 +31,10 @@ const BasketHeader = styled.div`
 const BasketHeaderLine = styled.hr`
   margin-bottom: 20px;
   border: 1px solid gray;
+
+  @media (prefers-color-scheme: dark) {
+    border-color: #444;
+  }
 `;
 
 const BasketTitle = styled.h2`
@@ -87,7 +91,7 @@ function Basket() {
   const navigate = useNavigate();
 
   return (
-    <BasketContainer>
+    <BasketContainer >
       <BasketTitle>Shopping Basket</BasketTitle>
       <Button
         variant="contained"
@@ -118,7 +122,7 @@ function Basket() {
             textAlign="center"
             fontWeight="600"
             fontSize={18}
-            className="text-gray-600"
+            className="text-gray-600 dark:text-gray-300"
           >
             The Basket is currently empty
           </Typography>
@@ -137,8 +141,13 @@ function Basket() {
             </Button>
 
             <div>
-              <span className="font-semibold">Total Price:</span>
-              <span className="font-bold text-green-600"> ${totalPrice}</span>
+              <span className="font-semibold dark:text-gray-100">
+                Total Price:
+              </span>
+              <span className="font-bold text-green-600 dark:text-green-400">
+                {" "}
+                ${totalPrice}
+              </span>
             </div>
           </div>
         )}
@@ -157,9 +166,12 @@ function CartItem({ cart }) {
   const { incQuantity, decQuantity, removeProduct } = useCart();
 
   return (
-    <BasketHeader className="pb-2 text-gray-500" key={cart.id}>
+    <BasketHeader
+      className="pb-2 text-gray-500 dark:text-gray-300"
+      key={cart.id}
+    >
       <p
-        className="w-fit cursor-pointer transition hover:text-black"
+        className="w-fit cursor-pointer transition hover:text-black dark:hover:text-white"
         onClick={() => navigate(`/products/${cart.id}`)}
       >
         {cart?.title}
@@ -182,7 +194,9 @@ function CartItem({ cart }) {
           <TrashIcon width={28} height={28} />
         </BasketButton>
       </div>
-      <div className="pb-2 font-semibold text-green-600">${cart?.price}</div>
+      <div className="pb-2 font-semibold text-green-600 dark:text-green-400">
+        ${cart?.price}
+      </div>
     </BasketHeader>
   );
 }

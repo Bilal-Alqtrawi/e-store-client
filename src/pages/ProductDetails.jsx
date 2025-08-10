@@ -34,6 +34,8 @@ const ProductDescription = styled.div`
 `;
 
 function ProductDetails() {
+  const { setQuery } = useCart();
+
   const [product, setProduct] = useState({ errorMessage: "", data: [] });
   const [isLoading, setIsLoading] = useState(false);
   const [isExpended, setIsExpended] = useState(false);
@@ -49,6 +51,7 @@ function ProductDetails() {
 
   useEffect(
     function () {
+      setQuery("");
       setIsLoading(true);
       const fetchData = async () => {
         const res = await getProductById(productId);
@@ -58,14 +61,14 @@ function ProductDetails() {
 
       fetchData();
     },
-    [productId],
+    [productId, setQuery],
   );
 
   if (isLoading) {
     return <Loading />;
   }
 
-  const { id, title, image, specs, features, price, description } =
+  const { id, title, image, specs, features, price, description, stock } =
     product.data;
 
   function handleExpended() {
@@ -80,113 +83,129 @@ function ProductDetails() {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "70vh",
-        }}
-      >
-        <Card
-          sx={{
-            // display: "flex",
-            alignItems: "center",
-            flexGrow: 1,
-            boxShadow: 3,
-            p: "10px",
-            borderRadius: 4,
-          }}
-          className="!grid !grid-cols-[0.7fr_1fr_0.3fr] gap-2"
-        >
-          <ProductTitle>
-            <h2 className="mb-5">
-              <Link
-                to={`.`}
-                className="transtion duration-200 hover:text-[#1976d2]"
-              >
-                {title}
-              </Link>
+    <Card
+      sx={{
+        // display: "flex",
+        alignItems: "center",
+        flexGrow: 1,
+        p: "10px",
+        borderRadius: 4,
+        bgcolor: "#fafafa",
+      }}
+      className="!grid !grid-cols-[0.7fr_1fr_0.3fr] gap-2 dark:bg-zinc-800"
+    >
+      <ProductTitle>
+        <h2 className="mb-5">
+          <Link
+            to={`.`}
+            className="transtion duration-200 hover:text-[#1976d2] dark:text-vibrant-textDark"
+          >
+            {title}
+          </Link>
+        </h2>
+      </ProductTitle>
+      {/* Product Image */}
+      <CardMedia
+        component="img"
+        sx={{ objectFit: "cover" }}
+        image={`/assets/${image}`}
+        alt={title}
+        className="p-5"
+      />
+
+      {/* Product Content */}
+      <CardContent sx={{ padding: "8px" }}>
+        <Typography component="div" className="space-y-5 pr-5">
+          <div className="categort-product-info-dimensions">
+            <h2 className="mb-2 font-bold text-vibrant-text dark:text-vibrant-textDark">
+              Dimensions
             </h2>
-          </ProductTitle>
-          {/* Product Image */}
-          <CardMedia
-            component="img"
-            sx={{ objectFit: "cover" }}
-            image={`/assets/${image}`}
-            alt={title}
-            className="p-5"
-          />
+            <p className="text-gray-600 dark:text-vibrant-textDark">
+              {specs?.dimensions}
+            </p>
+          </div>
 
-          {/* Product Content */}
-          <CardContent sx={{ padding: "8px" }}>
-            <Typography component="div" className="space-y-5 pr-5">
-              <div className="categort-product-info-dimensions">
-                <h2 className="mb-2 font-bold">Dimensions</h2>
-                <p className="text-gray-600">{specs?.dimensions}</p>
-              </div>
+          {specs?.capacity && (
+            <div>
+              <h2 className="mb-2 font-bold text-vibrant-text dark:text-vibrant-textDark">
+                Capacity
+              </h2>
+              <label className="text-gray-600 dark:text-vibrant-textDark">
+                {specs.capacity}
+              </label>
+            </div>
+          )}
 
-              {specs?.capacity && (
-                <div>
-                  <h2 className="mb-2 font-bold">Capacity</h2>
-                  <label className="text-gray-600">{specs.capacity}</label>
-                </div>
-              )}
-
-              <Typography component="div">
-                <h2 className="mb-2 font-bold">Features</h2>
-                <ul className="space-y-2 text-gray-600">
-                  {features?.map((feat, i) => (
-                    <li key={i}>{feat}</li>
-                  ))}
-                </ul>
-              </Typography>
-            </Typography>
-          </CardContent>
-          <CardActions className="flex h-full flex-col justify-evenly gap-3 self-start">
-            <Typography
-              variant="h6"
-              color="success"
-              fontWeight="bold"
-              fontSize="30px"
-            >
-              ${price}
-            </Typography>
-            <Typography component="div" textAlign="center">
-              <Button
-                size="small"
-                variant="contained"
-                color="primary"
-                endIcon={<ShoppingCartIcon className="size-5" />}
-                onClick={() =>
-                  addProduct({
-                    id,
-                    title,
-                    image,
-                    specs,
-                    features,
-                    price,
-                    description,
-                  })
-                }
-              >
-                Add to Basket
-              </Button>
-            </Typography>
-          </CardActions>
-
-          <Typography component="div" className="col-span-full">
-            <ProductDescription
-              dangerouslySetInnerHTML={createMarkUp()}
-            ></ProductDescription>
-            <Button onClick={handleExpended}>
-              {isExpended ? "Less" : "More..."}
-            </Button>
+          <Typography component="div">
+            <h2 className="mb-2 font-bold text-vibrant-text dark:text-vibrant-textDark">
+              Features
+            </h2>
+            <ul className="space-y-2 text-gray-600">
+              {features?.map((feat, i) => (
+                <li key={i} className="dark:text-vibrant-textDark">
+                  {feat}
+                </li>
+              ))}
+            </ul>
           </Typography>
-        </Card>
-      </Box>
-    </>
+        </Typography>
+      </CardContent>
+      <CardActions className="flex h-full flex-col justify-evenly gap-3 self-start">
+        <Typography
+          variant="h6"
+          color="success"
+          fontWeight="bold"
+          fontSize="30px"
+        >
+          ${price}
+        </Typography>
+
+        {/* <Typography
+          component="div"
+          className="rounded-md bg-vibrant-background p-2 !text-base font-semibold text-gray-800 dark:bg-zinc-800 dark:text-gray-100"
+        >
+          <label className="block">Stock Level: {stock}</label>
+          <label className="block">FREE Delivery</label>
+        </Typography> */}
+        <div className="flex w-full flex-col rounded-md bg-vibrant-background p-2 text-center text-sm font-semibold text-gray-800 dark:bg-zinc-800 dark:text-gray-100">
+          <label>Stock Level: {stock}</label>
+          <label>FREE Delivery</label>
+        </div>
+        <Typography component="div" textAlign="center">
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            endIcon={<ShoppingCartIcon className="size-5" />}
+            onClick={() =>
+              addProduct({
+                id,
+                title,
+                image,
+                specs,
+                features,
+                price,
+                description,
+              })
+            }
+          >
+            Add to Basket
+          </Button>
+        </Typography>
+      </CardActions>
+
+      <Typography
+        component="div"
+        className="col-span-full text-vibrant-text dark:text-vibrant-textDark"
+      >
+        <ProductDescription
+          dangerouslySetInnerHTML={createMarkUp()}
+        ></ProductDescription>
+        <Button onClick={handleExpended}>
+          {isExpended ? "Less" : "More..."}
+        </Button>
+      </Typography>
+    </Card>
   );
 }
 

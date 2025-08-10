@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 
 // 1) Define Context
 const CartContext = createContext();
@@ -47,6 +47,7 @@ function reducer(state = initalState, action) {
 // 2) Provider
 export default function CartProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initalState);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(state.items));
@@ -153,6 +154,8 @@ export default function CartProvider({ children }) {
     decQuantity,
     clearBasket,
     totalPrice,
+    query,
+    setQuery,
   };
 
   // value: Centerl place for state abouut entire wrapped children in Application

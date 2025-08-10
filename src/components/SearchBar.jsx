@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useCart } from "../contexts/useCart";
 
 const SearchIcon = styled.span`
   position: absolute;
@@ -12,7 +13,7 @@ const SearchIcon = styled.span`
 `;
 
 function SearchBar() {
-  const [query, setQuery] = useState("");
+  const { query, setQuery } = useCart();
 
   const timeoutId = useRef(null);
   const inputEL = useRef(null);
@@ -53,7 +54,7 @@ function SearchBar() {
         name="search"
         value={query}
         onChange={handleChange}
-        className="ml-2 mt-1 h-8 rounded-md px-2 py-1 text-black focus:outline-vibrant-primary"
+        className="ml-2 mt-1 h-8 rounded-md px-2 py-1 text-black focus:outline-vibrant-primary dark:focus:outline-[#0d0d0d]"
         ref={inputEL}
       />
       <SearchIcon>

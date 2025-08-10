@@ -39,11 +39,13 @@ function MyOrders() {
   }, []);
 
   return (
-    <div className="p-6">
-      <h2 className="mb-6 text-3xl font-bold text-gray-800">🛒 My Orders</h2>
+    <div>
+      <h2 className="mb-6 text-3xl font-bold text-gray-800 dark:text-gray-100">
+        🛒 My Orders
+      </h2>
 
       {orders.length === 0 ? (
-        <p className="text-gray-500">No orders yet.</p>
+        <p className="text-gray-500 dark:text-gray-400">No orders yet.</p>
       ) : (
         <OrderList orders={orders} />
       )}
@@ -63,7 +65,19 @@ function OrderList({ orders }) {
 
 function OrderItem({ order, index }) {
   return (
-    <Card className="rounded-xl p-5 shadow-md">
+    <Card
+      sx={{
+        borderRadius: 2,
+        padding: 2,
+        bgcolor: "background.paper",
+        backgroundColor: (theme) =>
+          theme.palette.mode === "dark" ? "#000" : "#fff",
+        boxShadow: (theme) =>
+          theme.palette.mode === "dark" ? "none" : theme.shadows[3],
+        border: (theme) =>
+          theme.palette.mode === "dark" ? "1px solid #3f3f46" : "none",
+      }}
+    >
       <Typography
         variant="h6"
         component="h3"
@@ -76,7 +90,7 @@ function OrderItem({ order, index }) {
 
       <Divider sx={{ marginBottom: "10px" }} />
 
-      <div className="space-y-2 text-gray-700">
+      <div className="space-y-2 text-gray-700 dark:text-gray-300">
         <p>
           <strong>Date:</strong> {order.date}
         </p>
@@ -89,7 +103,9 @@ function OrderItem({ order, index }) {
         </p>
         <p>
           <strong>Status:</strong>{" "}
-          <span className="font-medium text-yellow-600">Processing</span>
+          <span className="font-medium text-yellow-600 dark:text-yellow-400">
+            Processing
+          </span>
         </p>
       </div>
     </Card>
